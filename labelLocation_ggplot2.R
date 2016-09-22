@@ -1,6 +1,7 @@
 labelLocation_ggplot2 <- function(x, propLoc, locCode){
   
-  # this will find the coordinate locations for placing lables on figures made via ggplot2. these coordinates can then be fed into, for example, annotate etc.
+  # this will find the coordinate locations for placing lables on figures made via ggplot2. 
+  # these coordinates can then be fed into, for example, annotate etc.
   
   # x is a ggplot item. e.g. x <- ggplot2(.....)
   # propLoc is the % inset of the label.
