@@ -8,6 +8,7 @@ labelLocation_ggplot2 <- function(x, propLoc, locCode){
   # locCode is the location of the label - "topLeft", "topRight", "bottomLeft", "bottomRight".
   
   # SLC 22-09-2016
+  # Updated SLC 10-04-2017 - change in lines 15 and 16 due to change of ggplot2 package functioning.
   
   ##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
