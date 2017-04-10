@@ -11,8 +11,8 @@ labelLocation_ggplot2 <- function(x, propLoc, locCode){
   
   ##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
-  xLimit <- ggplot_build(x)$panel$ranges[[1]]$x.range 
-  yLimit <- ggplot_build(x)$panel$ranges[[1]]$y.range 
+  xLimit <- ggplot_build(x)$layout$panel_ranges[[1]]$x.range 
+  yLimit <- ggplot_build(x)$layout$panel_ranges[[1]]$y.range 
   
   xRange <- xLimit[2] - xLimit[1]
   yRange <- yLimit[2] - yLimit[1]
