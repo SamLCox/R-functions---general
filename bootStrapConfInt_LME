@@ -1,0 +1,36 @@
+#### Function to bootstrap confidence intervals for the population mean of a mixed effects linear model.  Code should also work on GLMM depending on packages.
+#### Function was written to work with nlme package.
+#### Currently the function is set up for a model with a random effect of pupID, and one continuous fixed effect named dataX that has been standardised by subtracting the mean (meanX) and dividing by the standard deviation (stdX).
+#### the function will return estimates on the original, non-standardised scale
+#### Alterations can be made for other model structures/data types
+
+#### 12/01/2017 - Sam L Cox
+###################################################################################################
+
+popPlot <- function(dataX, lmeMod, sdX, meanX){
+  
+  newDataPop <- data.frame(dataX = rep(seq(from = min(dataX), to = max(dataX), length = 100), 1), pupID = rep(0, 100))
+  
+  CoFix <- lmeMod$coefficients$fixed
+  VaFix <- lmeMod$varFix
+  
+  BootstrapParameters<-rmvnorm(10000, CoFix , VaFix)   #10000 x number of coefficients (pick n=10000 values with mean on coef(geeModelFinal) and sd = covariance
+  
+  BootstrapCoefs<- BootstrapParameters[, c(1:2)]        #columns of bootstraped coefficients that correspond to the covariate under analysis
+  Basis<- cbind(rep(1,100), newDataPop$dataX)    #first column of 1s (for intercept), second column with values of covariate
+  RealFitCenter1<- Basis%*%CoFix[c(1:2)]                                                  #point estimates
+  BootstrapFits<- Basis%*%t(BootstrapCoefs)                                                    #multiply basis by bootstraped coefficients to get uncertainty around point estimates
+  
+  quant.func<- function(x){quantile(x, probs=c(0.025,0.975))}
+  cis<-apply(BootstrapFits, 1, quant.func)                                                     #get 95% confidence intervals
+  cil1<-cis[1,]                                                                                #lower CI
+  ciu1<-cis[2,]
+  
+  newDataPop$fittedValues <- (RealFitCenter1 * sdX) + meanX
+  newDataPop$dataX <- (newDataPop$dataX * sdX) + meanX
+  newDataPop$upperCI <- (ciu1 * sdX) + meanX
+  newDataPop$lowCI <- (cil1 * sdX) + meanX
+  
+  return(newDataPop)
+  rm(CoFix, VaFix, BootstrapParameters, BootstrapCoefs, Basis, RealFitCenter1, BootstrapFits, cis, cil1, ciu1)
+}
